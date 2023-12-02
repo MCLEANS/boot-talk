@@ -65,6 +65,11 @@ public:
       */
      bool is_NACK(void);
 
+     /**
+      * @return default instance of the protocol interface
+      */
+     static ProtocolInterface* get_instance();
+
 };
 
 

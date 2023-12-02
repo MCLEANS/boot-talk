@@ -62,6 +62,7 @@ void ProtocolInterface::stop_boot_talk() {
 }
 
 int ProtocolInterface::send_chunk(void *buffer, size_t len) {
+
     uint8_t payload[6];
 
     payload[0] = CM_BOOT_CHUNK;
@@ -91,4 +92,9 @@ bool ProtocolInterface::is_ACK() {
 
 bool ProtocolInterface::is_NACK() {
     return true;
+}
+
+ProtocolInterface* ProtocolInterface::get_instance() {
+    static ProtocolInterface interface;
+    return &interface;
 }
