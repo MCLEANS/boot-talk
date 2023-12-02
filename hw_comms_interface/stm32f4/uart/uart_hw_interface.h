@@ -8,24 +8,17 @@
 #include "hw_abstract_interface.h"
 #include "circular_buffer.h"
 
-#include "termios.h"
+#include "usart.h"
 #include <string>
-#include "stddef.h"
-#include <mutex>
 
 #define  BOOT_FLASHER_BUFFER_SIZE 1024
-#define  BOOT_FLASHER_PLATFORM_LINUX
+#define  BOOT_FLASHER_PLATFORM_STM32F4
 
-class UARTHardwareInterfaceLinux : public AbstractHardwareInterface {
+class UARTHardwareInterfaceStm32f4 : public AbstractHardwareInterface {
 
 private:
 
-    static int _uart;
-
-    /**
-     * Store whether port is open or closed. This prevents opening an already open port
-     */
-    bool _port_is_open;
+    custom_libraries::USART _uart;
 
     /**
     * Buffer to store received bytes
@@ -37,7 +30,7 @@ public:
     /**
     * Default constructor
    */
-    UARTHardwareInterfaceLinux();
+    UARTHardwareInterfaceStm32f4();
 
     /**
      * initialize the hardware interfaces
@@ -89,9 +82,9 @@ public:
 
     /**
      *
-     * @returns a statically allocated instance on  UARTHardwareInterfaceLinux
+     * @returns a statically allocated instance on  UARTHardwareInterfaceStm32f4
      */
-    static UARTHardwareInterfaceLinux* get_instance();
+    static UARTHardwareInterfaceStm32f4* get_instance();
 
 };
 
