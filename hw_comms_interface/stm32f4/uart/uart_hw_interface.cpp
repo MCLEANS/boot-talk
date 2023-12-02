@@ -4,14 +4,9 @@
 
 #include "uart_hw_interface.h"
 #include <cassert>
+#include BOOT_TALK_HW_CONFIG_FILE
 
 #define INVALID_FD_RETURN   -1
-
-#define BOOT_TALK_USART         USART2 
-#define BOOT_TALK_USART_PORT    GPIOA
-#define BOOT_TALK_USART_RX      3
-#define BOOT_TALK_USART_TX      2
-#define BOOT_TALK_USART_BAUD    115200
 
 UARTHardwareInterfaceStm32f4::UARTHardwareInterfaceStm32f4(): _uart(BOOT_TALK_USART,
                                                                     BOOT_TALK_USART_PORT,
@@ -29,10 +24,9 @@ int UARTHardwareInterfaceStm32f4::initialize()
     if (!initialized) {
         _uart.initialize();
 
-        NVIC_SetPriority(USART1_IRQn,0x03);
-	    NVIC_EnableIRQ(USART1_IRQn);
+        NVIC_SetPriority(BOOT_TALK_USART_IRQ,0x03);
+	    NVIC_EnableIRQ(BOOT_TALK_USART_IRQ);
 
-        // DEBUG("Successfully initialized serial port");
     }
 
     return 0;
@@ -66,7 +60,7 @@ void UARTHardwareInterfaceStm32f4::write_buff(char c)
 }
 
 
-extern "C" void USART1_IRQHandler(void){
+extern "C" void BOOT_TALK_USART_IRQ_HANDLER(void){
     if(BOOT_TALK_USART->SR & USART_SR_RXNE){
 		BOOT_TALK_USART->SR &= ~USART_SR_RXNE;
         AbstractHardwareInterface::get_instance()->write_buff(USART1->DR);
@@ -119,7 +113,7 @@ ssize_t UARTHardwareInterfaceStm32f4::read(void* buffer, size_t len)
     return r;
 }
 
-#if defined (BOOT_FLASHER_PLATFORM_STM32F4)
+#if defined (BOOT_TALK_STM32)
 
 AbstractHardwareInterface* AbstractHardwareInterface::get_instance()
 {

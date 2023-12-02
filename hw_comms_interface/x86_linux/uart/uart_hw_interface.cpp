@@ -147,7 +147,7 @@ ssize_t UARTHardwareInterfaceLinux::read(void* buffer, size_t len)
     return r;
 }
 
-#if defined (BOOT_FLASHER_PLATFORM_LINUX)
+#if defined (BOOT_TALK_LINUX)
 
 AbstractHardwareInterface* AbstractHardwareInterface::get_instance()
 {
