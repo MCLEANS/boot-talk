@@ -112,7 +112,7 @@ ssize_t UARTHardwareInterfaceLinux::write(void* buffer, size_t len)
         return 0;
     }
 
-    bytes_written = ::write(_uart, buffer, len);
+    bytes_written = ::write(_uart, buff, len);
 
     return bytes_written;
 }

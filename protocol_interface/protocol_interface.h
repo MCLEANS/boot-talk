@@ -24,7 +24,17 @@ private:
      */
     uint32_t calculateCRC32(uint8_t* data, size_t length);
 
+    /**
+     * Interface to handle hardware communication
+     */
+    AbstractHardwareInterface* _hw_interface;
+
 public:
+    /**
+     * Initialize the protocol interface
+     */
+    void initialize();
+
     /**
      * Send command to start bootloader communication
      */
@@ -54,6 +64,11 @@ public:
       * @return true or false
       */
      bool is_NACK(void);
+
+     /**
+      * @return default instance of the protocol interface
+      */
+     static ProtocolInterface* get_instance();
 
 };
 

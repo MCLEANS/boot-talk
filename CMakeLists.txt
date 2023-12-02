@@ -5,6 +5,7 @@ add_library(boot-talk INTERFACE)
 target_include_directories(boot-talk INTERFACE
         common
         hw_comms_interface/hw_abstract_interface
+        protocol_interface
         utils
         )
 
