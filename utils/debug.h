@@ -6,7 +6,12 @@
 #define SECURE_BOOT_FLASHER_DEBUG_H
 
 #include <stdio.h>
+#include BOOT_TALK_HW_CONFIG_FILE
 
-#define DEBUG(message) (printf("[Boot-talk] - %s \n", message))
+#ifdef BOOT_TALK_LINUX
+#define DEBUG(fmt, ...) printf("[Boot-talk]\t" fmt "\r\n", ##__VA_ARGS__)
+#else 
+#define DEBUG(fmt, ...) 
+#endif
 
 #endif //SECURE_BOOT_FLASHER_DEBUG_H

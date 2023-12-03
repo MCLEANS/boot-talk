@@ -3,6 +3,7 @@
 //
 
 #include "uart_hw_interface.h"
+#include BOOT_TALK_HW_CONFIG_FILE
 
 #include <stdio.h>
 #include <unistd.h>         //Used for UART
@@ -28,7 +29,7 @@ int UARTHardwareInterfaceLinux::initialize()
 
     if (!initialized) {
 
-        _uart = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NDELAY);
+        _uart = open(BOOT_TALK_USART_PORT, O_RDWR | O_NOCTTY | O_NDELAY);
 
         if (_uart == INVALID_FD_RETURN) {
             DEBUG("ERROR opening serial port");
@@ -38,7 +39,7 @@ int UARTHardwareInterfaceLinux::initialize()
         struct termios options;
 
         tcgetattr(_uart, &options);
-        options.c_cflag = B115200 | CS8 | CLOCAL | CREAD;         //<Set baud rate, enable receiver
+        options.c_cflag = BOOT_TALK_USART_BAUD | CS8 | CLOCAL | CREAD;         //<Set baud rate, enable receiver
         options.c_iflag = IGNPAR;
         options.c_oflag = 0;
         options.c_lflag = 0;

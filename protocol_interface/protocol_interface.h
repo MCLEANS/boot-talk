@@ -32,8 +32,9 @@ private:
 public:
     /**
      * Initialize the protocol interface
+     * @return 0 for success and -1 for failure
      */
-    void initialize();
+    int initialize();
 
     /**
      * Send command to start bootloader communication

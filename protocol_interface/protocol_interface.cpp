@@ -4,14 +4,15 @@
 
 #include "protocol_interface.h"
 #include <string.h>
+#include "debug.h"
 
 ProtocolInterface::ProtocolInterface(){
 
 }
 
-void ProtocolInterface::initialize() {
+int ProtocolInterface::initialize() {
     _hw_interface = AbstractHardwareInterface::get_instance();
-    _hw_interface->initialize();
+    return _hw_interface->initialize();
 }
 
 // CRC-32 polynomial
@@ -36,6 +37,7 @@ uint32_t ProtocolInterface::calculateCRC32(uint8_t *data, size_t length) {
 }
 
 void ProtocolInterface::start_boot_talk() {
+
     uint8_t payload[6];
 
     payload[0] = CM_BOOT_START;
@@ -45,6 +47,8 @@ void ProtocolInterface::start_boot_talk() {
     memcpy( (void*) &payload[2], (const void*) &crc,4);
 
     _hw_interface->write((void*) payload, sizeof(payload));
+    DEBUG("Flash Begin");
+    DEBUG("START, DATA: %d Bytes, CRC-32: %04X",payload[1], crc);
 
 }
 
@@ -58,6 +62,10 @@ void ProtocolInterface::stop_boot_talk() {
     memcpy( (void*) &payload[2], (const void*) &crc,4);
 
     _hw_interface->write((void*) payload, sizeof(payload));
+
+    DEBUG("STOP, DATA: %d Bytes, CRC-32: %04X",payload[1], crc);
+    DEBUG("Flash Complete");
+
 
 }
 
@@ -82,6 +90,8 @@ int ProtocolInterface::send_chunk(void *buffer, size_t len) {
     memcpy((void*) (chunk_buffer + 4), (void*)buff, len);
 
     _hw_interface->write((void*) chunk_buffer, sizeof(chunk_buffer));
+
+    DEBUG("CHUNK, DATA: %d Bytes, CRC-32: %04X", (int)(len-4), crc);
 
     return sizeof(chunk_buffer) + sizeof(payload);
 }
